@@ -29,3 +29,20 @@ void TokenizerTest::testSimpleKeywords()
         }
     }
 }
+
+void TokenizerTest::testUnmatched()
+{
+    Tokenizer tzr;
+    tzr.addRule("FOR", 0);
+    tzr.addRule("IF", 1);
+    tzr.addRule("WHEN", 2);
+    tzr.tokenize("\t   FOR IF\t \t \n \n WHEN WHEN WHEN  WHEn WHEN WHEN WHEN WHEN WHEN WHEN WHEN WHEN  ");
+    QCOMPARE(tzr.wasSuccessFull(), false);
+    Token unmatched = tzr.unmatched();
+    QCOMPARE(unmatched.text().startsWith("WHEn WHEN WHEN"), true);
+    QCOMPARE(unmatched.startLine(), 2);
+    QCOMPARE(unmatched.startColumn(), 17);
+    QCOMPARE(unmatched.type(), -1);
+
+
+}

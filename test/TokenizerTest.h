@@ -6,9 +6,10 @@
 class TokenizerTest : public QObject
 {
     Q_OBJECT
-        
+
 private slots:
 
+    void testUnmatched();
     void testSimpleKeywords();
     
 };
