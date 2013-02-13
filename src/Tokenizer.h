@@ -14,9 +14,10 @@ public:
 
     QList<Token*> tokenize(const QString &text);
     bool wasSuccessFull() const;
-    QString lastErrormessage() const;
+    Token unmatched();
 
     void addRule(QString expression, int type);
+    void deleteRules();
 
 
 private:
