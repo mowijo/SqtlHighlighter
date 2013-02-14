@@ -1,0 +1,2 @@
+* Cannot detect invalid identifiers.
+* Does not handle UFT-8

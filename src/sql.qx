@@ -13,7 +13,6 @@ mode ONE_AND_ONLY
 	
     [ \t\r\n]+  { }
 
-
     [aA][lL][lL][oO][cC][aA][tT][eE]	 => QUEX_TKN_KEYWORD_ALLOCATE(Lexeme);
     [aA][lL][tT][eE][rR]	 => QUEX_TKN_KEYWORD_ALTER(Lexeme);
     [aA][sS][sS][eE][rR][tT][iI][oO][nN]	 => QUEX_TKN_KEYWORD_ASSERTION(Lexeme);
@@ -103,7 +102,8 @@ mode ONE_AND_ONLY
     "{" =>	 QUEX_TKN_SPECIAL_LEFT_BRACE(Lexeme);
     "}" =>	 QUEX_TKN_SPECIAL_RIGHT_BRACE(Lexeme);
 
-    [:alpha:]+  => QUEX_TKN_IDENTIFIER(Lexeme);
+    ([:alpha:]|[@_#])([:alpha:]|[@_#$]|[0-9])* => QUEX_TKN_IDENTIFIER(Lexeme);
+
     [\-+]?[0-9]*\.?[0-9]+([eE][\-+]?[0-9]+)? => QUEX_TKN_NUMBER(Lexeme);
 
     --(.)*\n	=> QUEX_TKN_GREEDYCOMMENT(Lexeme);

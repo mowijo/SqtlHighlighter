@@ -98,9 +98,72 @@ void TokenizerTest::testNumbers()
     {
         for(int i = 0; i < got.size(); i++)
         {
-            qDebug() << got[i]->text();
             QCOMPARE(got[i]->text(), expected[i]->text());
             QCOMPARE(got[i]->type(), expected[i]->type());
         }
     }
 }
+
+void TokenizerTest::testValidIdentifiers()
+{
+    QList<QString> numbers;
+    QList<Token *> expected;
+    numbers
+            << "id"
+            << "@a_@$#_@$#_@$#Coltype"
+            << "#a_@$#_@$#_@$#Coltype"
+            << "_a_@$#_@$#_@$#Coltype123456789"
+               ;
+
+
+    Tokenizer tzr;
+    QString code;
+    foreach(QString i, numbers)
+    {
+        expected << new Token(0,0,0,0,i, Token::IDENTIFIER);
+        code += " " + i + " ";
+    }
+
+    QList<Token *> got = tzr.tokenize(code);
+
+    QCOMPARE(tzr.wasSuccessFull(), true);
+    QCOMPARE(expected.size(), got.size());
+    if(expected.size() == got.size())
+    {
+        for(int i = 0; i < got.size(); i++)
+        {
+            QCOMPARE(got[i]->text(), expected[i]->text());
+            QCOMPARE(got[i]->type(), expected[i]->type());
+        }
+    }
+}
+
+
+
+
+void TokenizerTest::testInvalidIdentifiers()
+{
+    QList<QString> numbers;
+    QList<Token *> expected;
+    numbers
+            << "0id"
+               ;
+    Tokenizer tzr;
+    QString code;
+    foreach(QString i, numbers)
+    {
+        expected << new Token(0,0,0,0,i, Token::FAILURE);
+        code += " " + i + " ";
+    }
+
+    QList<Token *> got = tzr.tokenize(code);
+
+//    QCOMPARE(tzr.wasSuccessFull(), true);
+
+        for(int i = 0; i < got.size(); i++)
+        {
+            //qDebug() << got[i]->text() << got[i]->type() ;
+
+        }
+    }
+
