@@ -4,7 +4,7 @@ class TokenPrivate
 {
 
 private:
-	Token *p;
+    Token *p;
 
 public:
 
@@ -13,18 +13,18 @@ public:
     int startcolumn;
     int endcolumn;
     QString text;
-    int type;
+    Token::TYPE type;
 
 
     TokenPrivate(Token *parent)
-	{
-		p = parent;
+    {
+        p = parent;
         startline = 0;
         startcolumn = 0;
         endline = 0;
         endcolumn = 0;
-        type = 0;
-	}
+        type = Token::UNKNOWN;
+    }
 
     void copy(TokenPrivate *other)
     {
@@ -47,15 +47,32 @@ public:
         return true;
     }
 
+    QString typeToString(Token::TYPE t)
+    {
+        switch(t)
+        {
+        case Token::KEYWORD: return QString("KEYWORD");
+        case Token::SPECIAL: return QString("SPECIAL");
+        case Token::GREEDYCOMMENT: return QString("GREEDYCOMMENT");
+        case Token::COMMENTSTART: return QString("COMMENTSTART");
+        case Token::COMMENTEND: return QString("COMMENTEND");
+        case Token::NUMBER: return QString("NUMBER");
+        case Token::STRING: return QString("STRING");
+        case Token::IDENTIFIER: return QString("IDENTIFIER");
+        case Token::FAILURE: return QString("FAILURE");
+        default:
+            return QString("Unknown");
+        }
+    }
+
 };
 
-Token::
-Token()
+Token::Token()
 {
     d = new TokenPrivate(this);
 }
 
-Token::Token(int startline, int startcolumn, int endline, int endcolumn, QString text, int type)
+Token::Token(int startline, int startcolumn, int endline, int endcolumn, QString text, TYPE type)
 {
     d = new TokenPrivate(this);
     d->startline = startline;
@@ -89,9 +106,22 @@ void Token::setStartLine(int sl)
     d->startline = sl;
 }
 
-int Token::type() const
+Token::TYPE Token::type() const
 {
     return d->type;
+}
+
+QString Token::toString() const
+{
+    QString s = QString("'%1' (%6) [l%2,c%3]->[l%4,c%5]")
+            .arg(this->text())
+            .arg(this->startLine())
+            .arg(this->startColumn())
+            .arg(this->endLine())
+            .arg(this->endColumn())
+            .arg(d->typeToString(this->type()));
+
+    return s;
 }
 
 QString Token::text() const
@@ -119,7 +149,7 @@ int Token::startLine() const
     return d->startline;
 }
 
-void Token::setType(int type)
+void Token::setType(TYPE type)
 {
     d->type = type;
 }
@@ -128,6 +158,7 @@ void Token::setText(const QString &text)
 {
     d->text = text;
 }
+
 
 void Token::setEndColumn(int ec)
 {
@@ -159,13 +190,8 @@ bool Token::operator !=(const Token &rhs)
 
 QDebug & operator<<(QDebug &dbg, const Token &t)
 {
-    QString s = QString("'%1' [l%2,c%3]->[l%4,c%5]")
-            .arg(t.text())
-            .arg(t.startLine())
-            .arg(t.startColumn())
-            .arg(t.endLine())
-            .arg(t.endColumn());
-    dbg << s;
+
+    dbg << t.toString();
     return dbg;
 }
 

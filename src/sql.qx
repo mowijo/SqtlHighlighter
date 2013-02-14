@@ -12,16 +12,98 @@ mode ONE_AND_ONLY
     <<FAIL>>	=> QUEX_TKN_FAILURE(Lexeme);
 	
     [ \t\r\n]+  { }
-    "FOR"    => QUEX_TKN_STRUCT;
-    "WHEN"    	=> QUEX_TKN_JUMP;
-    "IF"       => QUEX_TKN_TYPE_INT;
-    "double"    => QUEX_TKN_TYPE_DOUBLE;
-    "send"      => QUEX_TKN_SEND;
-    "expect"    => QUEX_TKN_EXPECT;
-    ";"         => QUEX_TKN_SEMICOLON;
-    "{"         => QUEX_TKN_BRACKET_OPEN;
-	"}"         => QUEX_TKN_BRACKET_CLOSE;
-    [0-9]+      => QUEX_TKN_NUMBER(number=atoi((char*)(Lexeme)));
+
+
+    [aA][lL][lL][oO][cC][aA][tT][eE]	 => QUEX_TKN_KEYWORD_ALLOCATE(Lexeme);
+    [aA][lL][tT][eE][rR]	 => QUEX_TKN_KEYWORD_ALTER(Lexeme);
+    [aA][sS][sS][eE][rR][tT][iI][oO][nN]	 => QUEX_TKN_KEYWORD_ASSERTION(Lexeme);
+    [aA][uU][tT][hH][oO][rR][iI][zZ][aA][tT][iI][oO][nN]	 => QUEX_TKN_KEYWORD_AUTHORIZATION(Lexeme);
+    [bB][yY]	 => QUEX_TKN_KEYWORD_BY(Lexeme);
+    [cC][aA][tT][aA][lL][oO][gG]	 => QUEX_TKN_KEYWORD_CATALOG(Lexeme);
+    [cC][hH][aA][rR][aA][cC][tT][eE][rR]	 => QUEX_TKN_KEYWORD_CHARACTER(Lexeme);
+    [cC][lL][oO][sS][eE]	 => QUEX_TKN_KEYWORD_CLOSE(Lexeme);
+    [cC][oO][lL][lL][aA][tT][iI][oO][nN]	 => QUEX_TKN_KEYWORD_COLLATION(Lexeme);
+    [cC][oO][mM][mM][iI][tT]	 => QUEX_TKN_KEYWORD_COMMIT(Lexeme);
+    [cC][oO][nN][nN][eE][cC][tT]	 => QUEX_TKN_KEYWORD_CONNECT(Lexeme);
+    [cC][oO][nN][nN][eE][cC][tT][iI][oO][nN]	 => QUEX_TKN_KEYWORD_CONNECTION(Lexeme);
+    [cC][oO][nN][sS][tT][rR][aA][iI][nN][tT][sS]	 => QUEX_TKN_KEYWORD_CONSTRAINTS(Lexeme);
+    [cC][rR][eE][aA][tT][eE]	 => QUEX_TKN_KEYWORD_CREATE(Lexeme);
+    [cC][uU][rR][sS][oO][rR]	 => QUEX_TKN_KEYWORD_CURSOR(Lexeme);
+    [dD][eE][aA][lL][lL][oO][cC][aA][tT][eE]	 => QUEX_TKN_KEYWORD_DEALLOCATE(Lexeme);
+    [dD][eE][cC][lL][aA][rR][eE]	 => QUEX_TKN_KEYWORD_DECLARE(Lexeme);
+    [dD][eE][lL][eE][tT][eE]	 => QUEX_TKN_KEYWORD_DELETE(Lexeme);
+    [dD][eE][sS][cC][rR][iI][bB][eE]	 => QUEX_TKN_KEYWORD_DESCRIBE(Lexeme);
+    [dD][eE][sS][cC][rR][iI][pP][tT][oO][rR]	 => QUEX_TKN_KEYWORD_DESCRIPTOR(Lexeme);
+    [dD][iI][aA][gG][nN][oO][sS][tT][iI][cC][sS]	 => QUEX_TKN_KEYWORD_DIAGNOSTICS(Lexeme);
+    [dD][iI][sS][cC][oO][nN][nN][eE][cC][tT]	 => QUEX_TKN_KEYWORD_DISCONNECT(Lexeme);
+    [dD][oO][mM][aA][iI][nN]	 => QUEX_TKN_KEYWORD_DOMAIN(Lexeme);
+    [eE][xX][eE][cC][uU][tT][eE]	 => QUEX_TKN_KEYWORD_EXECUTE(Lexeme);
+    [fF][eE][tT][cC][hH]	 => QUEX_TKN_KEYWORD_FETCH(Lexeme);
+    [fF][rR][oO][mM]	 => QUEX_TKN_KEYWORD_FROM(Lexeme);
+    [fF][uU][nN][cC][tT][iI][oO][nN]	 => QUEX_TKN_KEYWORD_FUNCTION(Lexeme);
+    [gG][eE][tT]	 => QUEX_TKN_KEYWORD_GET(Lexeme);
+    [gG][rR][aA][nN][tT]	 => QUEX_TKN_KEYWORD_GRANT(Lexeme);
+    [gG][rR][oO][uU][pP]	 => QUEX_TKN_KEYWORD_GROUP(Lexeme);
+    [hH][aA][vV][iI][nN][gG]	 => QUEX_TKN_KEYWORD_HAVING(Lexeme);
+    [iI][mM][mM][eE][dD][iI][aA][tT][eE]	 => QUEX_TKN_KEYWORD_IMMEDIATE(Lexeme);
+    [iI][nN][sS][eE][rR][tT]	 => QUEX_TKN_KEYWORD_INSERT(Lexeme);
+    [lL][oO][cC][aA][lL]	 => QUEX_TKN_KEYWORD_LOCAL(Lexeme);
+    [mM][eE][rR][gG][eE]	 => QUEX_TKN_KEYWORD_MERGE(Lexeme);
+    [mM][oO][dD][uU][lL][eE]	 => QUEX_TKN_KEYWORD_MODULE(Lexeme);
+    [nN][aA][mM][eE][sS]	 => QUEX_TKN_KEYWORD_NAMES(Lexeme);
+    [oO][pP][eE][nN]	 => QUEX_TKN_KEYWORD_OPEN(Lexeme);
+    [oO][rR][dD][eE][rR]	 => QUEX_TKN_KEYWORD_ORDER(Lexeme);
+    [pP][rR][eE][pP][aA][rR][eE]	 => QUEX_TKN_KEYWORD_PREPARE(Lexeme);
+    [pP][rR][oO][cC][eE][dD][uU][rR][eE]	 => QUEX_TKN_KEYWORD_PROCEDURE(Lexeme);
+    [rR][eE][vV][oO][kK][eE]	 => QUEX_TKN_KEYWORD_REVOKE(Lexeme);
+    [rR][oO][lL][lL][bB][aA][cC][kK]	 => QUEX_TKN_KEYWORD_ROLLBACK(Lexeme);
+    [sS][aA][vV][eE][pP][oO][iI][nN][tT]	 => QUEX_TKN_KEYWORD_SAVEPOINT(Lexeme);
+    [sS][cC][hH][eE][mM][aA]	 => QUEX_TKN_KEYWORD_SCHEMA(Lexeme);
+    [sS][eE][lL][eE][cC][tT]	 => QUEX_TKN_KEYWORD_SELECT(Lexeme);
+    [sS][eE][sS][sS][iI][oO][nN]	 => QUEX_TKN_KEYWORD_SESSION(Lexeme);
+    [sS][eE][tT]	 => QUEX_TKN_KEYWORD_SET(Lexeme);
+    [sS][qQ][lL]	 => QUEX_TKN_KEYWORD_SQL(Lexeme);
+    [tT][aA][bB][lL][eE]	 => QUEX_TKN_KEYWORD_TABLE(Lexeme);
+    [tT][eE][mM][pP][oO][rR][aA][rR][yY]	 => QUEX_TKN_KEYWORD_TEMPORARY(Lexeme);
+    [tT][iI][mM][eE]	 => QUEX_TKN_KEYWORD_TIME(Lexeme);
+    [tT][rR][aA][nN][sS][aA][cC][tT][iI][oO][nN]	 => QUEX_TKN_KEYWORD_TRANSACTION(Lexeme);
+    [tT][rR][aA][nN][sS][lL][aA][tT][iI][oO][nN]	 => QUEX_TKN_KEYWORD_TRANSLATION(Lexeme);
+    [tT][rR][iI][gG][gG][eE][rR]	 => QUEX_TKN_KEYWORD_TRIGGER(Lexeme);
+    [uU][pP][dD][aA][tT][eE]	 => QUEX_TKN_KEYWORD_UPDATE(Lexeme);
+    [vV][iI][eE][wW]	 => QUEX_TKN_KEYWORD_VIEW(Lexeme);
+    [wW][hH][eE][rR][eE]	 => QUEX_TKN_KEYWORD_WHERE(Lexeme);
+    [wW][oO][rR][kK]	 => QUEX_TKN_KEYWORD_WORK(Lexeme);
+    [zZ][oO][nN][eE]	 => QUEX_TKN_KEYWORD_ZONE(Lexeme);
+
+
+
+    "%" =>	 QUEX_TKN_SPECIAL_PERCENT(Lexeme);
+    "&" =>	 QUEX_TKN_SPECIAL_AMPERSAND(Lexeme);
+    "(" =>	 QUEX_TKN_SPECIAL_LEFT_PAREN(Lexeme);
+    ")" =>	 QUEX_TKN_SPECIAL_RIGHT_PAREN(Lexeme);
+    "*" =>	 QUEX_TKN_SPECIAL_ASTERISK(Lexeme);
+    "+" =>	 QUEX_TKN_SPECIAL_PLUS_SIGN(Lexeme);
+    "," =>	 QUEX_TKN_SPECIAL_COMMA(Lexeme);
+    "-" =>	 QUEX_TKN_SPECIAL_MINUS_SIGN(Lexeme);
+    "." =>	 QUEX_TKN_SPECIAL_PERIOD(Lexeme);
+    "/" =>	 QUEX_TKN_SPECIAL_SOLIDUS(Lexeme);
+    ":" =>	 QUEX_TKN_SPECIAL_COLON(Lexeme);
+    ";" =>	 QUEX_TKN_SPECIAL_SEMICOLON(Lexeme);
+    "<" =>	 QUEX_TKN_SPECIAL_LESS_THAN(Lexeme);
+    "=" =>	 QUEX_TKN_SPECIAL_EQUALS(Lexeme);
+    ">" =>	 QUEX_TKN_SPECIAL_GREATER_THAN(Lexeme);
+    "?" =>	 QUEX_TKN_SPECIAL_QUESTION_MARK(Lexeme);
+    "[" =>	 QUEX_TKN_SPECIAL_LEFT_BRACKET(Lexeme);
+    "??(" => QUEX_TKN_SPECIAL_LEFT_BRACKET_TRIGRAPH(Lexeme);
+    "]" =>	 QUEX_TKN_SPECIAL_RIGHT_BRACKET(Lexeme);
+    "??)" => QUEX_TKN_SPECIAL_RIGHT_BRACKET_TRIGRAPH(Lexeme);
+    "^" =>	 QUEX_TKN_SPECIAL_CIRCUMFLEX(Lexeme);
+    "_" =>	 QUEX_TKN_SPECIAL_UNDERSCORE(Lexeme);
+    "|" =>	 QUEX_TKN_SPECIAL_VERTICAL_BAR(Lexeme);
+    "{" =>	 QUEX_TKN_SPECIAL_LEFT_BRACE(Lexeme);
+    "}" =>	 QUEX_TKN_SPECIAL_RIGHT_BRACE(Lexeme);
+
+    [0-9]+      => QUEX_TKN_NUMBER(Lexeme);
     [:alpha:]+  => QUEX_TKN_IDENTIFIER(Lexeme);
 
 

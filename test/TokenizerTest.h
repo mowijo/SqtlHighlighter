@@ -10,6 +10,7 @@ class TokenizerTest : public QObject
 private slots:
 
     void testSimpleKeywords();
+    void testSimpleSelect();
     
 };
 

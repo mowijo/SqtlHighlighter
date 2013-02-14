@@ -16,6 +16,7 @@ private:
 public:
 
     bool success;
+    QString errormessage;
 
     TokenizerPrivate(Tokenizer *parent)
     {
@@ -30,7 +31,26 @@ public:
         t->setStartLine(st->line_number()-1);
         t->setEndColumn(st->column_number()-1+t->text().length());
         t->setEndLine(st->line_number()-1);
-        qDebug () << "I create " << t;
+        switch(st->type_id())
+        {
+        case QUEX_TKN_FAILURE: t->setType(Token::FAILURE); break;
+        case QUEX_TKN_IDENTIFIER: t->setType(Token::IDENTIFIER); break;
+        case QUEX_TKN_NUMBER: t->setType(Token::NUMBER); break;
+        default: t->setType(Token::UNKNOWN); break;
+        }
+
+        QString tokentype = QString::fromStdString(st->type_id_name());
+
+        if(tokentype.startsWith("KEYWORD_"))
+        {
+            t->setType(Token::KEYWORD);
+        }
+        if(tokentype.startsWith("SPECIAL_"))
+        {
+            t->setType(Token::SPECIAL);
+        }
+
+
         return t;
     }
 
@@ -79,7 +99,7 @@ QList<Token *> Tokenizer::tokenize(const QString &source)
     catch(std::runtime_error e)
     {
         d->success = false;
-        std::cout << "WHAT IS" << e.what() << "---";
+        d->errormessage = QString::fromStdString(e.what());
     }
 
     d->success = true;
@@ -89,6 +109,11 @@ QList<Token *> Tokenizer::tokenize(const QString &source)
 bool Tokenizer::wasSuccessFull() const
 {
     return d->success;
+}
+
+QString Tokenizer::errormessage() const
+{
+    return d->errormessage;
 }
 
 

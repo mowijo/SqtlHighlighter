@@ -14,6 +14,7 @@ public:
 
     QList<Token*> tokenize(const QString &text);
     bool wasSuccessFull() const;
+    QString errormessage() const;
 
 private:
 	class TokenizerPrivate *d;
