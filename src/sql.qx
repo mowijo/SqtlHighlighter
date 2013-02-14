@@ -103,9 +103,8 @@ mode ONE_AND_ONLY
     "{" =>	 QUEX_TKN_SPECIAL_LEFT_BRACE(Lexeme);
     "}" =>	 QUEX_TKN_SPECIAL_RIGHT_BRACE(Lexeme);
 
-    [0-9]+      => QUEX_TKN_NUMBER(Lexeme);
     [:alpha:]+  => QUEX_TKN_IDENTIFIER(Lexeme);
-
+    [\-+]?[0-9]*\.?[0-9]+([eE][\-+]?[0-9]+)? => QUEX_TKN_NUMBER(Lexeme);
 
     --(.)*\n	=> QUEX_TKN_GREEDYCOMMENT(Lexeme);
     "//"(.)*\n	=> QUEX_TKN_GREEDYCOMMENT(Lexeme);

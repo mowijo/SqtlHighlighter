@@ -54,3 +54,53 @@ void TokenizerTest::testSimpleSelect()
         }
     }
 }
+
+
+
+void TokenizerTest::testNumbers()
+{
+    QList<QString> numbers;
+    QList<Token *> expected;
+    numbers
+            << "1"
+            << "2"
+            << "3"
+            << "0"
+            << "0.5"
+            << "0.0"
+            << "-0"
+            << "-0.0"
+            << "-1.54486"
+            << "-3.115E-5"
+            << "-3.115E5"
+            << "-3.115E+5"
+            << "-3.115e-5"
+            << "-3.115e5"
+            << "-3.115e+5"
+            << "-117.6"
+            << "5161565161.651"
+            << "4654654654E5464";
+
+
+    Tokenizer tzr;
+    QString code;
+    foreach(QString n, numbers)
+    {
+        expected << new Token(0,0,0,0,n, Token::NUMBER);
+        code += " " + n + " ";
+    }
+
+    QList<Token *> got = tzr.tokenize(code);
+
+    QCOMPARE(tzr.wasSuccessFull(), true);
+    QCOMPARE(expected.size(), got.size());
+    if(expected.size() == got.size())
+    {
+        for(int i = 0; i < got.size(); i++)
+        {
+            qDebug() << got[i]->text();
+            QCOMPARE(got[i]->text(), expected[i]->text());
+            QCOMPARE(got[i]->type(), expected[i]->type());
+        }
+    }
+}
