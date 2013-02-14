@@ -2,6 +2,7 @@
 #define TOKEN_H
 
 #include <QString>
+#include <QDebug>
 
 class Token
 {
@@ -35,6 +36,10 @@ private:
 	friend class TokenPrivate;
 
 };
+
+QDebug & operator<<(QDebug &dbg, const Token &t);
+QDebug & operator<<(QDebug &dbg, Token *t);
+
 
 
 #endif /* TOKEN_H */

@@ -14,11 +14,6 @@ public:
 
     QList<Token*> tokenize(const QString &text);
     bool wasSuccessFull() const;
-    Token unmatched();
-
-    void addRule(QString expression, int type);
-    void deleteRules();
-
 
 private:
 	class TokenizerPrivate *d;

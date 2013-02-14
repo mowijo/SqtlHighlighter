@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 
+#
+# cmd /c quex -i sql.qx -o sqllexer --source-package quex
+#
+
 PROJECT(libtokenizer)
  
 if (NOT CMAKE_BUILD_TYPE STREQUAL "Release") 
@@ -7,19 +11,22 @@ if (NOT CMAKE_BUILD_TYPE STREQUAL "Release")
 endif(NOT CMAKE_BUILD_TYPE STREQUAL "Release")
 
 SET(CMAKE_CXX_FLAGS "-Wall")
-
+add_definitions(-DQUEX_OPTION_ASSERTS_DISABLED)
 FIND_PACKAGE( Qt4 REQUIRED )
 set(CMAKE_AUTOMOC ON)
 INCLUDE( ${QT_USE_FILE} )
 
 INCLUDE_DIRECTORIES(
-	${CMAKE_CURRENT_SOURCE_DIR}
-	${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/quex
+
 ) 
 
 SET( SOURCES
-	Token.cpp
-	Tokenizer.cpp
+    Token.cpp
+    Tokenizer.cpp
+    quex/sqllexer.cpp
 )
 
 ADD_LIBRARY( tokenizer SHARED ${SOURCES} )

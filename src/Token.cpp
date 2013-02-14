@@ -49,7 +49,8 @@ public:
 
 };
 
-Token::Token()
+Token::
+Token()
 {
     d = new TokenPrivate(this);
 }
@@ -153,4 +154,23 @@ bool Token::operator==(const Token& rhs)
 bool Token::operator !=(const Token &rhs)
 {
     return !this->d->equals(rhs.d);
+}
+
+
+QDebug & operator<<(QDebug &dbg, const Token &t)
+{
+    QString s = QString("'%1' [l%2,c%3]->[l%4,c%5]")
+            .arg(t.text())
+            .arg(t.startLine())
+            .arg(t.startColumn())
+            .arg(t.endLine())
+            .arg(t.endColumn());
+    dbg << s;
+    return dbg;
+}
+
+QDebug & operator<<(QDebug &dbg, Token *t)
+{
+    dbg << *t;
+    return dbg;
 }

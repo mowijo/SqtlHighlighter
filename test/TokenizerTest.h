@@ -9,7 +9,6 @@ class TokenizerTest : public QObject
 
 private slots:
 
-    void testUnmatched();
     void testSimpleKeywords();
     
 };

@@ -3,6 +3,7 @@
 #include <QPair>
 #include "Token.h"
 
+#include <sqllexer>
 
 typedef QPair<QString, int> Rule ;
 
@@ -10,68 +11,26 @@ class TokenizerPrivate
 {
 
 private:
-	Tokenizer *p;
+    Tokenizer *p;
 
 public:
 
     bool success;
-    QList<Rule> rules;
 
-    Token unmatched;
-    QString stack;
-    int currentline;
-    int currentcolumn;
-
-    int startedline;
-    int startedcolumn;
-
-	TokenizerPrivate(Tokenizer *parent)
-	{
-		p = parent;
-	}
-
-
-    void addRule(QString rule, int type)
+    TokenizerPrivate(Tokenizer *parent)
     {
-        rules << Rule(rule, type);
+        p = parent;
     }
 
-
-    void flushStack()
+    Token * createToken(quex::Token *st)
     {
-        stack = "";
-        startedline = currentline;
-        startedcolumn = currentcolumn;
-    }
-
-    Token* matchRules()
-    {
-        Token *t = 0;
-        if(stack == " " || stack == "\t" || stack == "\n")
-        {
-            if(stack.count("\n") > 0)
-            {
-                currentline += stack.count("\n");
-                currentcolumn = 0;
-            }
-            flushStack();
-        }
-
-        foreach(Rule r, rules)
-        {
-            if(stack == r.first)
-            {
-                t = new Token();
-                t->setStartLine(startedline);
-                t->setEndLine(currentline);
-                t->setStartColumn(startedcolumn);
-                t->setEndColumn(currentcolumn-1);
-                t->setText(stack);
-                t->setType(r.second);
-                flushStack();
-                break;
-            }
-        }
+        Token *t  =  new Token();
+        t->setText(QString::fromUtf8((const char*)st->get_text().c_str()));
+        t->setStartColumn(st->column_number()-1);
+        t->setStartLine(st->line_number()-1);
+        t->setEndColumn(st->column_number()-1+t->text().length());
+        t->setEndLine(st->line_number()-1);
+        qDebug () << "I create " << t;
         return t;
     }
 
@@ -79,7 +38,7 @@ public:
 
 Tokenizer::Tokenizer()
 {
-	d = new TokenizerPrivate(this);
+    d = new TokenizerPrivate(this);
 }
 
 Tokenizer::~Tokenizer()
@@ -87,36 +46,43 @@ Tokenizer::~Tokenizer()
     delete d;
 }
 
-QList<Token *> Tokenizer::tokenize(const QString &text)
+QList<Token *> Tokenizer::tokenize(const QString &source)
 {
     QList<Token*> tokens;
-    d->stack = "";
-    d->currentline = 0;
-    d->currentcolumn = 0;
-    d->startedcolumn = 0;
-    d->startedline = 0;
-    d->success = true;
+    QString s(source);
 
-    for(int i = 0; i < text.length(); i++)
-    {
-        d->stack += text[i];
-        d->currentcolumn++;
-        Token *t = d->matchRules();
-        if(t)
-        {
-            tokens << t;
-        }
+    quex::Token*       token_p = 0x0;
+    d->success = false;
+    try {
+
+        QUEX_TYPE_CHARACTER *text = (QUEX_TYPE_CHARACTER*)malloc(s.toUtf8().length());
+        quex::sqllexer   qlex(text, s.toUtf8().length(), text);
+        qlex.buffer_fill_region_prepare();
+
+        int WIERDCONSTANT = 1; //This plus 1 is strange but needed to remedy a friggin offset.
+
+        memcpy(text+WIERDCONSTANT, s.toUtf8().data(), sizeof(QUEX_TYPE_CHARACTER)*s.size()+WIERDCONSTANT);
+        int receive_n = sizeof(QUEX_TYPE_CHARACTER)*s.size()+WIERDCONSTANT;
+        qlex.buffer_fill_region_finish(receive_n);
+
+        do {
+            qlex.receive(&token_p);       // --token-policy queue
+
+            if(token_p->type_id() != QUEX_TKN_TERMINATION )
+            {
+                tokens << d->createToken(token_p);
+            }
+
+        } while( token_p->type_id() != QUEX_TKN_TERMINATION );
+        delete text;
     }
-    if(d->stack != "")
+    catch(std::runtime_error e)
     {
         d->success = false;
-        d->unmatched.setText(d->stack);
-        d->unmatched.setStartColumn(d->startedcolumn);
-        d->unmatched.setStartLine(d->startedline);
-        d->unmatched.setEndColumn(d->currentcolumn-1);
-        d->unmatched.setEndLine(d->currentline);
-        d->unmatched.setType(-1);
+        std::cout << "WHAT IS" << e.what() << "---";
     }
+
+    d->success = true;
     return tokens;
 }
 
@@ -125,19 +91,6 @@ bool Tokenizer::wasSuccessFull() const
     return d->success;
 }
 
-Token Tokenizer::unmatched()
-{
-    return d->unmatched;
-}
 
-void Tokenizer::addRule(QString expression, int type)
-{
-    d->addRule(expression, type);
-}
-
-void Tokenizer::deleteRules()
-{
-    d->rules.clear();
-}
 
 

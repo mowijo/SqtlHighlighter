@@ -1,0 +1,35 @@
+header {
+#include <cstdlib>  // for: atoi()
+
+
+
+}
+
+mode ONE_AND_ONLY
+{
+    <<EOF>>     => QUEX_TKN_TERMINATION;
+
+    <<FAIL>>	=> QUEX_TKN_FAILURE(Lexeme);
+	
+    [ \t\r\n]+  { }
+    "FOR"    => QUEX_TKN_STRUCT;
+    "WHEN"    	=> QUEX_TKN_JUMP;
+    "IF"       => QUEX_TKN_TYPE_INT;
+    "double"    => QUEX_TKN_TYPE_DOUBLE;
+    "send"      => QUEX_TKN_SEND;
+    "expect"    => QUEX_TKN_EXPECT;
+    ";"         => QUEX_TKN_SEMICOLON;
+    "{"         => QUEX_TKN_BRACKET_OPEN;
+	"}"         => QUEX_TKN_BRACKET_CLOSE;
+    [0-9]+      => QUEX_TKN_NUMBER(number=atoi((char*)(Lexeme)));
+    [:alpha:]+  => QUEX_TKN_IDENTIFIER(Lexeme);
+
+
+    --(.)*\n	=> QUEX_TKN_GREEDYCOMMENT(Lexeme);
+    "//"(.)*\n	=> QUEX_TKN_GREEDYCOMMENT(Lexeme);
+    "/*"([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*"*/"	=>QUEX_TKN_COMMENT;
+    "/*"        => QUEX_TKN_COMMENTSTART;
+    "*/"        => QUEX_TKN_COMMENTEND;
+
+    \"([^"\\]*(\\.[^"\\]*)*)\" => QUEX_TKN_STRING(Lexeme);
+}
