@@ -36,6 +36,14 @@ public:
         case QUEX_TKN_FAILURE: t->setType(Token::FAILURE); break;
         case QUEX_TKN_IDENTIFIER: t->setType(Token::IDENTIFIER); break;
         case QUEX_TKN_NUMBER: t->setType(Token::NUMBER); break;
+        case QUEX_TKN_COMMENT:
+        {
+            t->setType(Token::COMMENT);
+            t->setEndLine(st->line_number()-1 + t->text().count("\n"));
+            break;
+        }
+        case QUEX_TKN_COMMENTSTART: t->setType(Token::COMMENTSTART); break;
+        case QUEX_TKN_COMMENTEND: t->setType(Token::COMMENTEND); break;
         default: t->setType(Token::UNKNOWN); break;
         }
 

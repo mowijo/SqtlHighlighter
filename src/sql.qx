@@ -108,7 +108,7 @@ mode ONE_AND_ONLY
 
     --(.)*\n	=> QUEX_TKN_GREEDYCOMMENT(Lexeme);
     "//"(.)*\n	=> QUEX_TKN_GREEDYCOMMENT(Lexeme);
-    "/*"([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*"*/"	=>QUEX_TKN_COMMENT;
+    "/*"([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*"*/"	=>QUEX_TKN_COMMENT(Lexeme);
     "/*"        => QUEX_TKN_COMMENTSTART;
     "*/"        => QUEX_TKN_COMMENTEND;
 

@@ -2,6 +2,7 @@
 #define TOKEN_H
 
 #include <QString>
+#include <QList>
 #include <QDebug>
 
 class Token
@@ -15,6 +16,7 @@ public:
         KEYWORD,
         SPECIAL,
         GREEDYCOMMENT,
+        COMMENT,
         COMMENTSTART,
         COMMENTEND,
         NUMBER,
@@ -57,6 +59,11 @@ private:
 
 QDebug & operator<<(QDebug &dbg, const Token &t);
 QDebug & operator<<(QDebug &dbg, Token *t);
+
+typedef QList<Token*> TokenPList;
+
+Q_DECLARE_METATYPE(Token)
+Q_DECLARE_METATYPE(TokenPList)
 
 
 

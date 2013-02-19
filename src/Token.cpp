@@ -56,6 +56,7 @@ public:
         case Token::GREEDYCOMMENT: return QString("GREEDYCOMMENT");
         case Token::COMMENTSTART: return QString("COMMENTSTART");
         case Token::COMMENTEND: return QString("COMMENTEND");
+        case Token::COMMENT: return QString("COMMENT");
         case Token::NUMBER: return QString("NUMBER");
         case Token::STRING: return QString("STRING");
         case Token::IDENTIFIER: return QString("IDENTIFIER");

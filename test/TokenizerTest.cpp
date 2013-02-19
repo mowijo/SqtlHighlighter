@@ -49,7 +49,7 @@ void TokenizerTest::testSimpleSelect()
     {
         for(int i = 0; i < got.size(); i++)
         {
-            Token *t = got[i];
+
             QCOMPARE( *got[i] == *expected[i], true);
         }
     }
@@ -106,9 +106,9 @@ void TokenizerTest::testNumbers()
 
 void TokenizerTest::testValidIdentifiers()
 {
-    QList<QString> numbers;
+    QList<QString> identifiers;
     QList<Token *> expected;
-    numbers
+    identifiers
             << "id"
             << "@a_@$#_@$#_@$#Coltype"
             << "#a_@$#_@$#_@$#Coltype"
@@ -118,7 +118,7 @@ void TokenizerTest::testValidIdentifiers()
 
     Tokenizer tzr;
     QString code;
-    foreach(QString i, numbers)
+    foreach(QString i, identifiers)
     {
         expected << new Token(0,0,0,0,i, Token::IDENTIFIER);
         code += " " + i + " ";
@@ -143,14 +143,14 @@ void TokenizerTest::testValidIdentifiers()
 
 void TokenizerTest::testInvalidIdentifiers()
 {
-    QList<QString> numbers;
+    QList<QString> identifiers;
     QList<Token *> expected;
-    numbers
+    identifiers
             << "0id"
                ;
     Tokenizer tzr;
     QString code;
-    foreach(QString i, numbers)
+    foreach(QString i, identifiers)
     {
         expected << new Token(0,0,0,0,i, Token::FAILURE);
         code += " " + i + " ";
@@ -158,12 +158,145 @@ void TokenizerTest::testInvalidIdentifiers()
 
     QList<Token *> got = tzr.tokenize(code);
 
-//    QCOMPARE(tzr.wasSuccessFull(), true);
+    //    QCOMPARE(tzr.wasSuccessFull(), true);
 
-        for(int i = 0; i < got.size(); i++)
-        {
-            //qDebug() << got[i]->text() << got[i]->type() ;
+    for(int i = 0; i < got.size(); i++)
+    {
+        //qDebug() << got[i]->text() << got[i]->type() ;
 
-        }
+    }
+}
+
+
+void TokenizerTest::testMultiLineComments_data()
+{
+    QTest::addColumn<QString>("code");
+    QTest::addColumn<TokenPList>("expected");
+
+    QTest::newRow("/* */ in a single line")
+            << "this is /* a comment */ we ignore"
+            << (
+                TokenPList()
+                << new Token(0,0,0,4,"this", Token::IDENTIFIER)
+                << new Token(0,5,0,7,"is", Token::IDENTIFIER)
+                << new Token(0,8,0,23,"/* a comment */", Token::COMMENT)
+                << new Token(0,24,0,26,"we", Token::IDENTIFIER)
+                << new Token(0,27,0,33,"ignore", Token::IDENTIFIER)
+               );
+
+
+    QTest::newRow("/* */ with a newlines within")
+            << "this is \n/* \na\n comment\n */\n we ignore"
+            << (
+                TokenPList()
+                << new Token(0,0,0,4,"this", Token::IDENTIFIER)
+                << new Token(0,5,0,7,"is", Token::IDENTIFIER)
+                << new Token(1,0,4,18,"/* \na\n comment\n */", Token::COMMENT)
+                << new Token(5,1,5,3,"we", Token::IDENTIFIER)
+                << new Token(5,4,5,10,"ignore", Token::IDENTIFIER)
+               );
+
+    QTest::newRow("/* A lot of stuff within the comment...*/")
+            << "/* A lot of stuff within the comment...*/"
+            << (
+                TokenPList()
+                << new Token(0,0,0,41,"/* A lot of stuff within the comment...*/", Token::COMMENT)
+               );
+
+
+
+}
+
+void TokenizerTest::testMultiLineComments()
+{
+    Tokenizer tzr;
+    QFETCH(QString, code);
+    QFETCH(TokenPList, expected);
+
+    TokenPList got = tzr.tokenize(code);
+    QCOMPARE(expected.size(), got.size());
+    for(int i = 0; i < got.size(); i++)
+    {
+        QCOMPARE(got[i]->type(), expected[i]->type());
+        QCOMPARE(got[i]->text(), expected[i]->text());
+        QCOMPARE(got[i]->startLine(), expected[i]->startLine());
+        QCOMPARE(got[i]->endLine(), expected[i]->endLine());
+        QCOMPARE(got[i]->startColumn(), expected[i]->startColumn());
+        QCOMPARE(got[i]->endColumn(), expected[i]->endColumn());
+
     }
 
+}
+
+
+
+
+void TokenizerTest::testPartialMultiLineComments_data()
+{
+    QTest::addColumn<QString>("code");
+    QTest::addColumn<TokenPList>("expected");
+
+    QTest::newRow("this is a /* partial comment ")
+            << "this is a /* partial comment "
+            << (
+                TokenPList()
+               << new Token(0,  0, 0, 4,"this", Token::IDENTIFIER)
+               << new Token(0,  5, 0, 7,"is", Token::IDENTIFIER)
+               << new Token(0,  8, 0, 9,"a", Token::IDENTIFIER)
+               << new Token(0, 10, 0, 10,"", Token::COMMENTSTART)
+               << new Token(0, 13, 0, 20,"partial", Token::IDENTIFIER)
+               << new Token(0, 21, 0, 28,"comment", Token::IDENTIFIER)
+               );
+
+    QTest::newRow("this is a */ partial comment ")
+            << "this is a */ partial comment "
+            << (
+                TokenPList()
+               << new Token(0,  0, 0,  4,"this", Token::IDENTIFIER)
+               << new Token(0,  5, 0,  7,"is", Token::IDENTIFIER)
+               << new Token(0,  8, 0,  9,"a", Token::IDENTIFIER)
+               << new Token(0, 10, 0, 10,"", Token::COMMENTEND)
+               << new Token(0, 13, 0, 20,"partial", Token::IDENTIFIER)
+               << new Token(0, 21, 0, 28,"comment", Token::IDENTIFIER)
+               );
+
+
+    QTest::newRow("this is a /* */ partial /* comment ")
+            << "this is a /* */ partial /* comment "
+            << (
+                TokenPList()
+               << new Token(0, 0, 0, 4,"this", Token::IDENTIFIER)
+               << new Token(0, 5, 0, 7,"is", Token::IDENTIFIER)
+               << new Token(0, 8, 0, 9,"a", Token::IDENTIFIER)
+               << new Token(0, 10, 0, 15,"/* */", Token::COMMENT)
+               << new Token(0, 16, 0, 23,"partial", Token::IDENTIFIER)
+               << new Token(0, 24, 0, 24,"", Token::COMMENTSTART)
+               << new Token(0, 27, 0, 34,"comment", Token::IDENTIFIER)
+               );
+
+
+
+
+}
+
+void TokenizerTest::testPartialMultiLineComments()
+{
+    Tokenizer tzr;
+    QFETCH(QString, code);
+    QFETCH(TokenPList, expected);
+
+    TokenPList got = tzr.tokenize(code);
+    QCOMPARE(expected.size(), got.size());
+    for(int i = 0; i < got.size(); i++)
+    {
+        qDebug() << got[i]->toString();
+        QCOMPARE(got[i]->type(), expected[i]->type());
+        QCOMPARE(got[i]->text(), expected[i]->text());
+        QCOMPARE(got[i]->startLine(), expected[i]->startLine());
+        QCOMPARE(got[i]->endLine(), expected[i]->endLine());
+        QCOMPARE(got[i]->startColumn(), expected[i]->startColumn());
+        QCOMPARE(got[i]->endColumn(), expected[i]->endColumn());
+
+    }
+
+}

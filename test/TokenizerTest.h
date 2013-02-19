@@ -15,6 +15,13 @@ private slots:
     void testValidIdentifiers();
     void testInvalidIdentifiers();
 
+    void testMultiLineComments();
+    void testMultiLineComments_data();
+
+    void testPartialMultiLineComments_data();
+    void testPartialMultiLineComments();
+
+
     
 };
 

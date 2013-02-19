@@ -31175,10 +31175,11 @@ TERMINAL_1316:
     __QUEX_COUNT_VOID(self.counter);
     {
 #   line 111 "sql.qx"
+    QUEX_NAME_TOKEN(take_text)(self_write_token_p(), &self, self.buffer._lexeme_start_p, self.buffer._input_p);
     self_send(QUEX_TKN_COMMENT);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31182 "sqllexer.cpp"
+#   line 31183 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31191,7 +31192,7 @@ TERMINAL_1318:
     self_send(QUEX_TKN_COMMENTSTART);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31195 "sqllexer.cpp"
+#   line 31196 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31204,7 +31205,7 @@ TERMINAL_1320:
     self_send(QUEX_TKN_COMMENTEND);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31208 "sqllexer.cpp"
+#   line 31209 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31218,7 +31219,7 @@ TERMINAL_818:
     self_send(QUEX_TKN_KEYWORD_PROCEDURE);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31222 "sqllexer.cpp"
+#   line 31223 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31232,7 +31233,7 @@ TERMINAL_311:
     self_send(QUEX_TKN_KEYWORD_CREATE);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31236 "sqllexer.cpp"
+#   line 31237 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31246,7 +31247,7 @@ TERMINAL_1342:
     self_send(QUEX_TKN_STRING);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31250 "sqllexer.cpp"
+#   line 31251 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31260,7 +31261,7 @@ TERMINAL_835:
     self_send(QUEX_TKN_KEYWORD_REVOKE);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31264 "sqllexer.cpp"
+#   line 31265 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31274,7 +31275,7 @@ TERMINAL_328:
     self_send(QUEX_TKN_KEYWORD_CURSOR);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31278 "sqllexer.cpp"
+#   line 31279 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31288,7 +31289,7 @@ TERMINAL_858:
     self_send(QUEX_TKN_KEYWORD_ROLLBACK);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31292 "sqllexer.cpp"
+#   line 31293 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31302,7 +31303,7 @@ TERMINAL_357:
     self_send(QUEX_TKN_KEYWORD_DEALLOCATE);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31306 "sqllexer.cpp"
+#   line 31307 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31316,7 +31317,7 @@ TERMINAL_884:
     self_send(QUEX_TKN_KEYWORD_SAVEPOINT);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31320 "sqllexer.cpp"
+#   line 31321 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31330,7 +31331,7 @@ TERMINAL_1257:
     self_send(QUEX_TKN_NUMBER);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31334 "sqllexer.cpp"
+#   line 31335 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31344,7 +31345,7 @@ TERMINAL_377:
     self_send(QUEX_TKN_KEYWORD_DECLARE);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31348 "sqllexer.cpp"
+#   line 31349 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31358,7 +31359,7 @@ TERMINAL_901:
     self_send(QUEX_TKN_KEYWORD_SCHEMA);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31362 "sqllexer.cpp"
+#   line 31363 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31372,7 +31373,7 @@ TERMINAL_394:
     self_send(QUEX_TKN_KEYWORD_DELETE);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31376 "sqllexer.cpp"
+#   line 31377 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31386,7 +31387,7 @@ TERMINAL_918:
     self_send(QUEX_TKN_KEYWORD_SELECT);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31390 "sqllexer.cpp"
+#   line 31391 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31400,7 +31401,7 @@ TERMINAL_417:
     self_send(QUEX_TKN_KEYWORD_DESCRIBE);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31404 "sqllexer.cpp"
+#   line 31405 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31414,7 +31415,7 @@ TERMINAL_938:
     self_send(QUEX_TKN_KEYWORD_SESSION);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31418 "sqllexer.cpp"
+#   line 31419 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31428,7 +31429,7 @@ TERMINAL_946:
     self_send(QUEX_TKN_KEYWORD_SET);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31432 "sqllexer.cpp"
+#   line 31433 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31442,7 +31443,7 @@ TERMINAL_954:
     self_send(QUEX_TKN_KEYWORD_SQL);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31446 "sqllexer.cpp"
+#   line 31447 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31456,7 +31457,7 @@ TERMINAL_1183:
     self_send(QUEX_TKN_SPECIAL_GREATER_THAN);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31460 "sqllexer.cpp"
+#   line 31461 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31470,7 +31471,7 @@ TERMINAL_446:
     self_send(QUEX_TKN_KEYWORD_DESCRIPTOR);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31474 "sqllexer.cpp"
+#   line 31475 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31484,7 +31485,7 @@ TERMINAL_1270:
     self_send(QUEX_TKN_GREEDYCOMMENT);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31488 "sqllexer.cpp"
+#   line 31489 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31498,7 +31499,7 @@ TERMINAL_968:
     self_send(QUEX_TKN_KEYWORD_TABLE);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31502 "sqllexer.cpp"
+#   line 31503 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31512,7 +31513,7 @@ TERMINAL_478:
     self_send(QUEX_TKN_KEYWORD_DIAGNOSTICS);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31516 "sqllexer.cpp"
+#   line 31517 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31526,7 +31527,7 @@ TERMINAL_994:
     self_send(QUEX_TKN_KEYWORD_TEMPORARY);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31530 "sqllexer.cpp"
+#   line 31531 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31540,7 +31541,7 @@ TERMINAL_1005:
     self_send(QUEX_TKN_KEYWORD_TIME);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31544 "sqllexer.cpp"
+#   line 31545 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31554,7 +31555,7 @@ TERMINAL_507:
     self_send(QUEX_TKN_KEYWORD_DISCONNECT);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31558 "sqllexer.cpp"
+#   line 31559 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
@@ -31565,7 +31566,7 @@ _5070: /* TERMINAL: END_OF_STREAM */
 #   line 10 "sql.qx"
     self_send(QUEX_TKN_TERMINATION);
     
-#   line 31569 "sqllexer.cpp"
+#   line 31570 "sqllexer.cpp"
 
     }
     /* End of Stream causes a return from the lexical analyzer, so that no
@@ -31592,7 +31593,7 @@ _5072: /* TERMINAL: FAILURE */
     self_send(QUEX_TKN_FAILURE);
     QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
     
-#   line 31596 "sqllexer.cpp"
+#   line 31597 "sqllexer.cpp"
 
     }
     goto __REENTRY_PREPARATION;
