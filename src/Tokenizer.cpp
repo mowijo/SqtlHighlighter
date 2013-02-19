@@ -44,6 +44,13 @@ public:
         }
         case QUEX_TKN_COMMENTSTART: t->setType(Token::COMMENTSTART); break;
         case QUEX_TKN_COMMENTEND: t->setType(Token::COMMENTEND); break;
+        case QUEX_TKN_GREEDYCOMMENT:
+        {
+            t->setType(Token::GREEDYCOMMENT);
+            t->setText(t->text().trimmed());
+            break;
+        }
+        case QUEX_TKN_STRING: t->setType(Token::STRING); break;
         default: t->setType(Token::UNKNOWN); break;
         }
 
@@ -77,7 +84,8 @@ Tokenizer::~Tokenizer()
 QList<Token *> Tokenizer::tokenize(const QString &source)
 {
     QList<Token*> tokens;
-    QString s(source);
+    QString s = source;
+
 
     quex::Token*       token_p = 0x0;
     d->success = false;

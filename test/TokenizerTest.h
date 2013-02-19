@@ -21,6 +21,8 @@ private slots:
     void testPartialMultiLineComments_data();
     void testPartialMultiLineComments();
 
+    void testGreedyComments();
+    void testGreedyComments_data();
 
     
 };

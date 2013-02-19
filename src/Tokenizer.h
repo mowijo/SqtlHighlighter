@@ -13,6 +13,8 @@ public:
 	~Tokenizer();
 
     QList<Token*> tokenize(const QString &text);
+    QList<Token*> m_tokenize(const QString &text);
+
     bool wasSuccessFull() const;
     QString errormessage() const;
 

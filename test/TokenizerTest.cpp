@@ -289,7 +289,6 @@ void TokenizerTest::testPartialMultiLineComments()
     QCOMPARE(expected.size(), got.size());
     for(int i = 0; i < got.size(); i++)
     {
-        qDebug() << got[i]->toString();
         QCOMPARE(got[i]->type(), expected[i]->type());
         QCOMPARE(got[i]->text(), expected[i]->text());
         QCOMPARE(got[i]->startLine(), expected[i]->startLine());
@@ -299,4 +298,83 @@ void TokenizerTest::testPartialMultiLineComments()
 
     }
 
+}
+
+void TokenizerTest::testGreedyComments_data()
+{
+    QTest::addColumn<QString>("code");
+    QTest::addColumn<TokenPList>("expected");
+
+    QTest::newRow("text \"contains // comment\"")
+            << "text \"contains // comment\""
+            << (
+                TokenPList()
+               << new Token(0,  0, 0, 4,"text", Token::IDENTIFIER)
+               << new Token(0,  5, 0, 26,"\"contains // comment\"", Token::STRING)
+               );
+
+    QTest::newRow("text \"contains -- comment\"")
+            << "text \"contains -- comment\""
+            << (
+                TokenPList()
+               << new Token(0,  0, 0, 4,"text", Token::IDENTIFIER)
+               << new Token(0,  5, 0, 26,"\"contains -- comment\"", Token::STRING)
+               );
+
+
+    QTest::newRow("text \"contains -- comment\"")
+            << "text \"contains -- comment\""
+            << (
+                TokenPList()
+               << new Token(0,  0, 0, 4,"text", Token::IDENTIFIER)
+               << new Token(0,  5, 0, 26,"\"contains -- comment\"", Token::STRING)
+               );
+
+    QTest::newRow("i = i - 3 --And a comment...")
+            << "i = i - 3 --And a comment..."
+            << (
+                TokenPList()
+                   << new Token(0,  0, 0,  1,"i", Token::IDENTIFIER)
+                   << new Token(0,  2, 0,  3,"=", Token::SPECIAL)
+                   << new Token(0,  4, 0,  5,"i", Token::IDENTIFIER)
+                   << new Token(0,  6, 0,  7,"-", Token::SPECIAL)
+                   << new Token(0,  8, 0,  9,"3", Token::NUMBER)
+                   << new Token(0, 10, 0, 29,"--And a comment...", Token::GREEDYCOMMENT)
+
+               );
+
+    QTest::newRow("i = i /3 //And a comment...")
+            << "i = i /3 //And a comment..."
+            << (
+                TokenPList()
+                   << new Token(0,  0, 0, 1,"i", Token::IDENTIFIER)
+                   << new Token(0,  2, 0, 3,"=", Token::SPECIAL)
+                   << new Token(0,  4, 0, 5,"i", Token::IDENTIFIER)
+                   << new Token(0,  6, 0, 7,"/", Token::SPECIAL)
+                   << new Token(0,  7, 0, 8,"3", Token::NUMBER)
+                   << new Token(0,  9, 0, 28,"//And a comment...", Token::GREEDYCOMMENT)
+
+               );
+
+
+}
+
+void TokenizerTest::testGreedyComments()
+{
+    Tokenizer tzr;
+    QFETCH(QString, code);
+    QFETCH(TokenPList, expected);
+
+    TokenPList got = tzr.tokenize(code+"\n");
+    QCOMPARE(expected.size(), got.size());
+    for(int i = 0; i < got.size(); i++)
+    {
+        QCOMPARE(got[i]->type(), expected[i]->type());
+        QCOMPARE(got[i]->text(), expected[i]->text());
+        QCOMPARE(got[i]->startLine(), expected[i]->startLine());
+        QCOMPARE(got[i]->endLine(), expected[i]->endLine());
+        QCOMPARE(got[i]->startColumn(), expected[i]->startColumn());
+        QCOMPARE(got[i]->endColumn(), expected[i]->endColumn());
+
+    }
 }
