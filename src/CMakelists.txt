@@ -27,7 +27,8 @@ SET( SOURCES
     Token.cpp
     Tokenizer.cpp
     quex/sqllexer.cpp
+    SqlSyntaxhighLighter.cpp
 )
 
-ADD_LIBRARY( tokenizer SHARED ${SOURCES} )
+ADD_LIBRARY( tokenizer STATIC ${SOURCES} )
 TARGET_LINK_LIBRARIES( tokenizer ${QT_LIBRARIES} )

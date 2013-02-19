@@ -94,7 +94,7 @@ QList<Token *> Tokenizer::tokenize(const QString &source)
             }
 
         } while( token_p->type_id() != QUEX_TKN_TERMINATION );
-        delete text;
+
     }
     catch(std::runtime_error e)
     {
