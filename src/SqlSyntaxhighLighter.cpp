@@ -104,13 +104,11 @@ void SqlSyntaxhighLighter::highlightBlock(const QString &text)
 
     if(commentstart.x() > -1)
     {
-        qDebug() << "A comment starts on " << commentstart.y();
         setFormat(commentstart.y(), text.length()-commentstart.y(), *d->formats[Token::COMMENT]);
         setCurrentBlockState(SqlSyntaxhighLighterPrivate::INSIDECOMMENT);
     }
-    if(commentend.x() > -1)
+    else if(commentend.x() > -1)
     {
-        qDebug() << "A comment ends on " << commentstart.y();
         if(previousBlockState() == SqlSyntaxhighLighterPrivate::INSIDECOMMENT)
         {
             setFormat(0, commentend.y()+2, *d->formats[Token::COMMENT]);
