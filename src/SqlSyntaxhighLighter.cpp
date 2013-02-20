@@ -42,7 +42,9 @@ public:
 
 
         format = new QTextCharFormat;
-        format->setForeground(QColor(128,64,0));
+        //format->setForeground(QColor(128,64,0));
+        format->setForeground(QColor(255,0,0));
+        format->setBackground(Qt::black);
         formats[Token::STRING] = format;
         formats[Token::NUMBER] = format;
 
@@ -65,10 +67,26 @@ SqlSyntaxhighLighter::~SqlSyntaxhighLighter()
 void SqlSyntaxhighLighter::highlightBlock(const QString &text)
 {
     QList<Token*> tokens = d->tzr.tokenize(text+"\n");
+
+    //Now. Since we are allowed to highlight one chunk at a time and that chunk may contain
+    // Mulitline-comment-start or -end without the matchins end/start we need to keep track
+    //of how far we have gotten in a multiline comment and wether it is being started or ended
+    //in the current block.
+    QPoint commentend(-1,-1);   //We use x for line and y for column
+    QPoint commentstart(-1,-1); //We use x for line and y for column
     foreach(Token *t, tokens)
     {
         QTextCharFormat *format = d->formats.value(t->type(), &d->noformat);
+        if(t->type() == Token::COMMENTSTART)
+        {
+            commentstart.setX(t->startLine());
+            commentstart.setY(t->startColumn());
+        }
+        if(t->type() == Token::COMMENTEND)
+        {
+            commentend.setX(t->endLine());
+            commentend.setY(t->endColumn());
+        }
         setFormat(t->startColumn(), t->text().length(), *format);
     }
-
 }

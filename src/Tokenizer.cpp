@@ -18,10 +18,28 @@ public:
     bool success;
     QString errormessage;
     QUEX_TYPE_CHARACTER *text;
+    int oldsize;
     TokenizerPrivate(Tokenizer *parent)
     {
         p = parent;
-        text = (QUEX_TYPE_CHARACTER*)malloc(3000);
+        oldsize = 10;
+        text = (QUEX_TYPE_CHARACTER*)malloc(oldsize);
+    }
+
+    ~TokenizerPrivate()
+    {
+        free(text);
+    }
+
+    void growTo(const QString &s)
+    {
+        int newsize = s.toLocal8Bit().length();
+        if(newsize < oldsize) return;
+        while(oldsize < newsize)
+        {
+            oldsize *= 2;
+        }
+        text = (QUEX_TYPE_CHARACTER*)realloc(text, oldsize);
     }
 
     Token * createToken(quex::Token *st)
@@ -86,7 +104,7 @@ QList<Token *> Tokenizer::tokenize(const QString &source)
 {
     QList<Token*> tokens;
     QString s = source;
-
+    d->growTo(s);
 
     quex::Token*       token_p = 0x0;
     d->success = false;
@@ -96,7 +114,7 @@ QList<Token *> Tokenizer::tokenize(const QString &source)
         quex::sqllexer   qlex(d->text, s.toUtf8().length(), d->text);
         qlex.buffer_fill_region_prepare();
 
-        int WIERDCONSTANT = 1; //This plus 1 is strange but needed to remedy a friggin offset.
+        int WIERDCONSTANT = 1; //This plus 1 is strange but needed to remedy a wierd offset.
 
         memcpy(d->text+WIERDCONSTANT, s.toUtf8().data(), sizeof(QUEX_TYPE_CHARACTER)*s.size()+WIERDCONSTANT);
         int receive_n = sizeof(QUEX_TYPE_CHARACTER)*s.size()+WIERDCONSTANT;
@@ -132,7 +150,3 @@ QString Tokenizer::errormessage() const
 {
     return d->errormessage;
 }
-
-
-
-

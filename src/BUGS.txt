@@ -1,4 +1,1 @@
-* Cannot detect invalid identifiers.
 * Does not handle UFT-8
-* "i = i -3" => [IDENTIFIER SPECIAL IDENTIFIER NUMBER].
-* Users manually need to append a newline in order to match greedy comments.
