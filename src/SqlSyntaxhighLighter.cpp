@@ -13,6 +13,14 @@ public:
     QMap<Token::TYPE, QTextCharFormat*> formats;
 
     QTextCharFormat noformat;
+
+    enum STATES
+    {
+        INSIDECOMMENT = 1,
+        OUTSIDECOMMENT
+
+    };
+
     SqlSyntaxhighLighterPrivate()
     {
         QTextCharFormat *format;
@@ -74,8 +82,12 @@ void SqlSyntaxhighLighter::highlightBlock(const QString &text)
     //in the current block.
     QPoint commentend(-1,-1);   //We use x for line and y for column
     QPoint commentstart(-1,-1); //We use x for line and y for column
+
+    //First we apply the styles for everything as if there was no issue with multi block
+    //comments. We do, however, remember if we encounter a start or end of a comment.
     foreach(Token *t, tokens)
     {
+        qDebug() << t->toString();
         QTextCharFormat *format = d->formats.value(t->type(), &d->noformat);
         if(t->type() == Token::COMMENTSTART)
         {
@@ -89,4 +101,35 @@ void SqlSyntaxhighLighter::highlightBlock(const QString &text)
         }
         setFormat(t->startColumn(), t->text().length(), *format);
     }
+
+    if(commentstart.x() > -1)
+    {
+        qDebug() << "A comment starts on " << commentstart.y();
+        setFormat(commentstart.y(), text.length()-commentstart.y(), *d->formats[Token::COMMENT]);
+        setCurrentBlockState(SqlSyntaxhighLighterPrivate::INSIDECOMMENT);
+    }
+    if(commentend.x() > -1)
+    {
+        qDebug() << "A comment ends on " << commentstart.y();
+        if(previousBlockState() == SqlSyntaxhighLighterPrivate::INSIDECOMMENT)
+        {
+            setFormat(0, commentend.y()+2, *d->formats[Token::COMMENT]);
+        }
+        else
+        {
+            setFormat(0, commentend.y()+2, *d->formats[Token::FAILURE]);
+        }
+        setCurrentBlockState(SqlSyntaxhighLighterPrivate::OUTSIDECOMMENT);
+    }
+    else if(previousBlockState() == SqlSyntaxhighLighterPrivate::INSIDECOMMENT)
+    {
+        setFormat(0, text.length(), *d->formats[Token::COMMENT]);
+        setCurrentBlockState(SqlSyntaxhighLighterPrivate::INSIDECOMMENT);
+    }
+    else
+    {
+        setCurrentBlockState(SqlSyntaxhighLighterPrivate::OUTSIDECOMMENT);
+        //Do nothing.
+    }
+
 }
