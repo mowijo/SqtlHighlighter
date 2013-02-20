@@ -17,10 +17,11 @@ public:
 
     bool success;
     QString errormessage;
-
+    QUEX_TYPE_CHARACTER *text;
     TokenizerPrivate(Tokenizer *parent)
     {
         p = parent;
+        text = (QUEX_TYPE_CHARACTER*)malloc(3000);
     }
 
     Token * createToken(quex::Token *st)
@@ -91,13 +92,13 @@ QList<Token *> Tokenizer::tokenize(const QString &source)
     d->success = false;
     try {
 
-        QUEX_TYPE_CHARACTER *text = (QUEX_TYPE_CHARACTER*)malloc(s.toUtf8().length());
-        quex::sqllexer   qlex(text, s.toUtf8().length(), text);
+
+        quex::sqllexer   qlex(d->text, s.toUtf8().length(), d->text);
         qlex.buffer_fill_region_prepare();
 
         int WIERDCONSTANT = 1; //This plus 1 is strange but needed to remedy a friggin offset.
 
-        memcpy(text+WIERDCONSTANT, s.toUtf8().data(), sizeof(QUEX_TYPE_CHARACTER)*s.size()+WIERDCONSTANT);
+        memcpy(d->text+WIERDCONSTANT, s.toUtf8().data(), sizeof(QUEX_TYPE_CHARACTER)*s.size()+WIERDCONSTANT);
         int receive_n = sizeof(QUEX_TYPE_CHARACTER)*s.size()+WIERDCONSTANT;
         qlex.buffer_fill_region_finish(receive_n);
 

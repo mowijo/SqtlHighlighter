@@ -73,6 +73,11 @@ mode ONE_AND_ONLY
     [wW][hH][eE][rR][eE]	 => QUEX_TKN_KEYWORD_WHERE(Lexeme);
     [wW][oO][rR][kK]	 => QUEX_TKN_KEYWORD_WORK(Lexeme);
     [zZ][oO][nN][eE]	 => QUEX_TKN_KEYWORD_ZONE(Lexeme);
+    [aA][nN][dD]        => QUEX_TKN_KEYWORD_AND(Lexeme);
+    [oO][rR]        => QUEX_TKN_KEYWORD_OR(Lexeme);
+    [nN][oO][tT]        => QUEX_TKN_KEYWORD_NOT(Lexeme);
+    [aA][sS][cC]    => QUEX_TKN_KEYWORD_ASC(Lexeme);
+    [dD][eE][sS][cC] => QUEX_TKN_KEYWORD_DESC(Lexeme);
 
 
 

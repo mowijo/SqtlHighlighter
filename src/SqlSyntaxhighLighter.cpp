@@ -9,6 +9,7 @@ class SqlSyntaxhighLighterPrivate
 {
 public:
 
+    Tokenizer tzr;
     QMap<Token::TYPE, QTextCharFormat*> formats;
 
     QTextCharFormat noformat;
@@ -34,6 +35,17 @@ public:
         formats[Token::FAILURE] = format;
         formats[Token::UNKNOWN] = format;
 
+        format = new QTextCharFormat;
+        format->setForeground(Qt::lightGray);
+        formats[Token::COMMENT] = format;
+        formats[Token::GREEDYCOMMENT] = format;
+
+
+        format = new QTextCharFormat;
+        format->setForeground(QColor(128,64,0));
+        formats[Token::STRING] = format;
+        formats[Token::NUMBER] = format;
+
 
     }
 
@@ -52,14 +64,11 @@ SqlSyntaxhighLighter::~SqlSyntaxhighLighter()
 
 void SqlSyntaxhighLighter::highlightBlock(const QString &text)
 {
-    Tokenizer tzr;
-    QList<Token*> tokens = tzr.tokenize(text);
+    QList<Token*> tokens = d->tzr.tokenize(text+"\n");
     foreach(Token *t, tokens)
     {
-        //QTextCharFormat *format = d->formats.value(t->type(), &d->noformat);
-        //setFormat(t->startColumn(), t->text().length(), *format);
-
-        qDebug() << t;
+        QTextCharFormat *format = d->formats.value(t->type(), &d->noformat);
+        setFormat(t->startColumn(), t->text().length(), *format);
     }
 
 }
