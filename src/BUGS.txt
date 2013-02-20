@@ -1,1 +1,2 @@
 * Does not handle UFT-8
+* Problem with a multiline comment that ends on a line where a new one starts later on the same line.

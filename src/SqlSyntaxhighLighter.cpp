@@ -80,42 +80,39 @@ void SqlSyntaxhighLighter::highlightBlock(const QString &text)
     // Mulitline-comment-start or -end without the matchins end/start we need to keep track
     //of how far we have gotten in a multiline comment and wether it is being started or ended
     //in the current block.
-    QPoint commentend(-1,-1);   //We use x for line and y for column
-    QPoint commentstart(-1,-1); //We use x for line and y for column
+    int commentend = -1;
+    int commentstart = -1;
 
     //First we apply the styles for everything as if there was no issue with multi block
     //comments. We do, however, remember if we encounter a start or end of a comment.
     foreach(Token *t, tokens)
     {
-        qDebug() << t->toString();
         QTextCharFormat *format = d->formats.value(t->type(), &d->noformat);
         if(t->type() == Token::COMMENTSTART)
         {
-            commentstart.setX(t->startLine());
-            commentstart.setY(t->startColumn());
+            commentstart = t->startColumn();
         }
         if(t->type() == Token::COMMENTEND)
         {
-            commentend.setX(t->endLine());
-            commentend.setY(t->endColumn());
+            commentend = t->endColumn();
         }
         setFormat(t->startColumn(), t->text().length(), *format);
     }
 
-    if(commentstart.x() > -1)
+    if(commentstart > -1)
     {
-        setFormat(commentstart.y(), text.length()-commentstart.y(), *d->formats[Token::COMMENT]);
+        setFormat(commentstart, text.length()-commentstart, *d->formats[Token::COMMENT]);
         setCurrentBlockState(SqlSyntaxhighLighterPrivate::INSIDECOMMENT);
     }
-    else if(commentend.x() > -1)
+    else if(commentend > -1)
     {
         if(previousBlockState() == SqlSyntaxhighLighterPrivate::INSIDECOMMENT)
         {
-            setFormat(0, commentend.y()+2, *d->formats[Token::COMMENT]);
+            setFormat(0, commentend+2, *d->formats[Token::COMMENT]);
         }
         else
         {
-            setFormat(0, commentend.y()+2, *d->formats[Token::FAILURE]);
+            setFormat(0, commentend+2, *d->formats[Token::FAILURE]);
         }
         setCurrentBlockState(SqlSyntaxhighLighterPrivate::OUTSIDECOMMENT);
     }
