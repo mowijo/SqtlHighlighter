@@ -1,1 +1,3 @@
 test/CMakeLists.txt.user
+src/CMakeLists.txt.user
+demo/CMakeLists.txt.user
