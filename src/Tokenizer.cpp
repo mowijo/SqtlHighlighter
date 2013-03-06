@@ -22,8 +22,8 @@ public:
     TokenizerPrivate(Tokenizer *parent)
     {
         p = parent;
-        oldsize = 10;
-        text = (QUEX_TYPE_CHARACTER*)malloc(oldsize);
+        oldsize = 1000;
+        text = (QUEX_TYPE_CHARACTER*)realloc(NULL, oldsize);
     }
 
     ~TokenizerPrivate()
