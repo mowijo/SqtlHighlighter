@@ -68,16 +68,16 @@ void TokenizerTest::testNumbers()
             << "0"
             << "0.5"
             << "0.0"
-            << "-0"
-            << "-0.0"
-            << "-1.54486"
-            << "-3.115E-5"
-            << "-3.115E5"
-            << "-3.115E+5"
-            << "-3.115e-5"
-            << "-3.115e5"
-            << "-3.115e+5"
-            << "-117.6"
+            << "0"
+            << "0.0"
+            << "1.54486"
+            << "3.115E-5"
+            << "3.115E5"
+            << "3.115E+5"
+            << "3.115e-5"
+            << "3.115e5"
+            << "3.115e+5"
+            << "117.6"
             << "5161565161.651"
             << "4654654654E5464";
 
@@ -94,7 +94,7 @@ void TokenizerTest::testNumbers()
 
     QCOMPARE(tzr.wasSuccessFull(), true);
     QCOMPARE(expected.size(), got.size());
-    if(expected.size() == got.size())
+	if(expected.size() == got.size())
     {
         for(int i = 0; i < got.size(); i++)
         {
@@ -102,6 +102,7 @@ void TokenizerTest::testNumbers()
             QCOMPARE(got[i]->type(), expected[i]->type());
         }
     }
+	
 }
 
 void TokenizerTest::testValidIdentifiers()

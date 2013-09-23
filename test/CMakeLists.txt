@@ -8,10 +8,11 @@ endif(NOT CMAKE_BUILD_TYPE STREQUAL "Release")
 
 SET(CMAKE_CXX_FLAGS "-Wall")
 
-FIND_PACKAGE( Qt4 REQUIRED )
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Gui REQUIRED) #For the tests
+find_package(Qt5Test REQUIRED) #For the tests
 set(CMAKE_AUTOMOC ON)
 
-INCLUDE( ${QT_USE_FILE} )
 
 ADD_SUBDIRECTORY(../src src)
 
@@ -29,8 +30,8 @@ SET( SOURCES
 )
 
 ADD_EXECUTABLE( libtokenizertest ${SOURCES} )
-TARGET_LINK_LIBRARIES( libtokenizertest ${QT_LIBRARIES} ${QT_QTTEST_LIBRARY} tokenizer)
-ADD_CUSTOM_COMMAND(
-    TARGET libtokenizertest POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/src/libtokenizer.dll ${CMAKE_BINARY_DIR}
-)	
+TARGET_LINK_LIBRARIES( libtokenizertest tokenizer)
+
+qt5_use_modules(libtokenizertest Widgets)
+qt5_use_modules(libtokenizertest Gui)	#For the tests
+qt5_use_modules(libtokenizertest Test)	#For the tests

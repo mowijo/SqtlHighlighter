@@ -3,11 +3,15 @@
 
 #include <QSyntaxHighlighter>
 
+#include <qglobal.h>
+
 class SqlSyntaxhighLighter : public QSyntaxHighlighter
 {
     Q_OBJECT
+
 public:
-    explicit SqlSyntaxhighLighter(QObject *parent = 0);
+    explicit SqlSyntaxhighLighter(QObject *parent);
+
     ~SqlSyntaxhighLighter();
 
 protected:
